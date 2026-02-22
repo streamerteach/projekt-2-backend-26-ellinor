@@ -1,7 +1,9 @@
 <h2>Sign up:</h2>
 <form action="./index.php?form=signup" method="POST">
-    Email:<input type="email" name="email"><br>
-    Username:<input type="text" name="username"><br>
+    Email:<input type="email" name="email" required><br>
+    Username:<input type="text" name="username" required><br>
+    Real name:<input type="text" name="realname" required><br>
+    Password:<input type="text" name="password" required><br>
     <input type="submit" name="signup" value="Sign up">
 </form>
 

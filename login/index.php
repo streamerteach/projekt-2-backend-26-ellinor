@@ -4,8 +4,8 @@
 
     <section>
         <article>
-            <?php include "../login_function.php"?>
-            <?php include "../signup_function.php"?>
+            <?php include "./login_function.php"?>
+            <?php include "./signup_function.php"?>
         </article>
         <article id="login-form">
             <?php

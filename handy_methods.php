@@ -1,7 +1,6 @@
 <?php
 //Starta en session för alla användare 
     session_start();
-
 //Databaskonfiguration
     $servername= "localhost";
     $dbname = "romanell";

@@ -15,22 +15,15 @@ if (!empty($_POST["username"])) {
     $username = test_input($_POST["username"]);
     $password = test_input($_POST["password"]);
 
-    $users = json_decode(file_get_contents('users.json'), true);
+    $sql = "SELECT id, username, passhash FROM profiles WHERE username = ?"; 
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$username]);
+    $profile = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!isset($users[$username])) {
-        print("<p class='msg'>Check input</p>");
-        return;
-    } else {
-        $hashedPassword = $users[$username]['password'];
-
-        if (!password_verify($password, $hashedPassword)) {
-            print("<p class='msg'>Check input</p>");
-            return;
-        }
-
+    if ($profile && password_verify($password, $profile['passhash'])) {
+        $_SESSION['uid'] = $profile['id'];
         $_SESSION["username"] = $username;
         setcookie("username", $username, time() + (86400 * 30), "/"); //86400s = 1 dag
-
 
         // kolla när användaren senast loggat in (touch(username.txt) exekverades)
         $lastVisit = fileatime("../profile/user_visits/$username.txt");
@@ -44,6 +37,9 @@ if (!empty($_POST["username"])) {
         touch("../profile/user_visits/".$username.".txt"); // uppdatera besökstid
         header("Location: ../profile");
         exit;
+    } else {
+            print("<p class='msg'>Check input</p>");
+            return;
     }
 }
 
