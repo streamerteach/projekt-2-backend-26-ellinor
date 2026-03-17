@@ -10,7 +10,13 @@ body{
     min-height: 100%;
     margin:0;
     background-color: rgb(247, 224, 245);
-    color:rgb(28, 17, 37)
+    color:rgb(47, 19, 51);
+}
+footer{
+    display: flex;
+    margin-top: 50px;
+    padding-top: 30px;
+    justify-content: center;
 }
 article{
     padding-bottom: 20px;
@@ -28,6 +34,7 @@ h2{
 }
 button{
     background-color: rgb(180, 134, 186);
+    border:rgb(180, 134, 186) 2px solid;
     color:rgb(240, 244, 255);
     border: none;
     margin:5px;
@@ -35,6 +42,35 @@ button{
     border-radius: 5px;
     cursor: pointer;
 }
+button:hover{
+    background-color:rgb(196, 151, 202);
+}
+.white-button{
+    border:rgb(180, 134, 186) 2px solid;
+    color:rgb(180, 134, 186);
+    background-color: rgb(254, 250, 255);
+}
+.white-button:hover{
+    background-color: rgb(180, 134, 186);
+    color: rgb(254, 250, 255);
+}
+input{
+    border-radius: 2px;
+    border:rgb(116, 63, 124) 1px solid;
+    color:rgb(116, 63, 124);
+    background-color: rgb(254, 250, 255);
+}
+::file-selector-button {
+    background-color: rgb(180, 134, 186);
+    border:rgb(180, 134, 186) 2px solid;
+    color:rgb(240, 244, 255);
+    border: none;
+    margin:3px;
+    padding: 3px 7px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
 
 #logo{
     margin: 25px;
@@ -98,7 +134,8 @@ a{
 }
 .box{
     display: flex;
-    width: 550px;
+    margin-top: 20px;
+    width: fit-content;
     padding: 10px;
     background-color: rgb(238, 216, 236);
     border: rgb(180, 134, 186) 1px solid;
@@ -106,16 +143,51 @@ a{
     justify-content: space-between;
     align-items: center;
 }
+.box input{
+    width: 200px;
+    margin-left: 10px;
+}
+
+/*användarlistan */
 .user-list{
     display: grid;
-    grid-template-columns: auto auto auto;
-    gap: 10px;
+    flex-direction: column;
+    gap: 20px;
 }
-.user-list div{
+.user-list-entry{
     display: grid;
-    max-width: 190px;
-    justify-content: center;
+    grid-template-columns: auto auto auto;
+    max-width: 680px;
+    width: 80%;
+    border-radius: 10px;
+    background-color: rgb(248, 233, 247);
+    align-items: center;
+    margin: 10px 0;
 }
+.user-list div .user-list-pfp{
+    grid-column: 1;
+}
+.text-container {
+    display: flex;
+    border:none;
+    flex-direction: column;
+}
+.text-container h2{
+    margin:0;
+}
+.like{
+    display: flex;
+    align-items: center;
+    margin: 20px 20px 0px 0px;
+    align-self:flex-start;
+    justify-self: right;
+}
+.like img{
+    width:25px;
+    height:25px;
+    margin: 0 5px;
+}
+
 
 #countdown-box{
     display: grid;
@@ -190,3 +262,32 @@ textarea{
     border-radius: 10px;
     border:rgb(180, 134, 186) 2px solid;
 }
+
+#bio{
+    border-radius: 10px;
+    background-color: rgb(248, 233, 247);
+    margin-top: 15px;
+    padding:5px 20px;
+}
+
+#deleteWindow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+}
+#deleteText{
+    background: rgb(254, 250, 255);  
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    margin: 20% auto;
+    text-align: center;
+}
+#cancelDelete{
+    border:rgb(180, 134, 186) 2px solid;
+    color:rgb(180, 134, 186);
+    background-color: rgb(254, 250, 255);
+}   

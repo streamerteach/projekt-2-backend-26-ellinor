@@ -18,14 +18,22 @@
                     </label>
                     <button type="submit">Confirm date</button>
                 </form><br>
-                
                 <?php include "./countdown.php"?>
+            
             </article>
             <h2>Our users:</h2>
-            <?php include "../model_profiles.php"?>
             <article class='user-list'>
-                <?php print(list_users())?>
+                <?php list_users($conn)?>
             </article>
+            <footer>
+            <?php 
+                print("Server running on ".$_SERVER['SERVER_SOFTWARE'].", PHP version ".phpversion().".<br>");
+            
+                //varje besökare (username eller IP) får en egen line i txt filen, så lines = besökare
+                $lineCount = substr_count(file_get_contents('./besok.txt'), PHP_EOL);
+                print("Number of visitors so far: ".$lineCount);
+            ?>
+            </footer>
         </section>
     </div>
 </body> 

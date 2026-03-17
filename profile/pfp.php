@@ -34,8 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["upload_pfp"])) {
     }
     move_uploaded_file($file['tmp_name'], $path);
 
+    $sql = "UPDATE profiles SET profile_picture = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$path, $_SESSION['uid']]);
+
     print($path);
 
-    header("Location: index.php");
+    header("Location: editprofile.php");
 }
 ?>

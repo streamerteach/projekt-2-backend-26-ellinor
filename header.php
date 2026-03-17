@@ -1,3 +1,12 @@
+<?php
+if (isset($_SESSION['uid'])) {
+    $sql = "SELECT * FROM profiles WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$_SESSION['uid']]);
+    $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+    //print_r($userInfo);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +24,7 @@
                 <a href="../home"> <li>Home</li></a>
                 <?php
                     if(!empty($_SESSION["username"])){
-                        print("<a href='../profile'> <li>Profile</li> <img src=".display_pfp($_SESSION["username"])." id='nav-pfp'></a>");
+                        print("<a href='../profile'> <li>Profile</li> <img src= '".$userInfo['profile_picture']."' id='nav-pfp'></a>");
                     } else{
                         print('<a href="../login"> <li>Login</li></a>');
                     }

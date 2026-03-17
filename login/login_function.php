@@ -13,7 +13,7 @@ if (!empty($_SESSION["username"])) {
 if (!empty($_POST["username"])) {
     // kom ihåg att alla användardata är skadlig
     $username = test_input($_POST["username"]);
-    $password = test_input($_POST["password"]);
+    $password = $_POST["password"];
 
     $sql = "SELECT id, username, passhash FROM profiles WHERE username = ?"; 
     $stmt = $conn->prepare($sql);
@@ -21,8 +21,9 @@ if (!empty($_POST["username"])) {
     $profile = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($profile && password_verify($password, $profile['passhash'])) {
+        
         $_SESSION['uid'] = $profile['id'];
-        $_SESSION["username"] = $username;
+        $_SESSION["username"] = $profile['username'];
         setcookie("username", $username, time() + (86400 * 30), "/"); //86400s = 1 dag
 
         // kolla när användaren senast loggat in (touch(username.txt) exekverades)
@@ -37,9 +38,10 @@ if (!empty($_POST["username"])) {
         touch("../profile/user_visits/".$username.".txt"); // uppdatera besökstid
         header("Location: ../profile");
         exit;
+
     } else {
-            print("<p class='msg'>Check input</p>");
-            return;
+        print("<p class='msg'>Check input</p>");
+        return;
     }
 }
 
