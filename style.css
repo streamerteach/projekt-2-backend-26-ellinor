@@ -17,6 +17,7 @@ footer{
     margin-top: 50px;
     padding-top: 30px;
     justify-content: center;
+    align-items: center;
 }
 article{
     padding-bottom: 20px;
@@ -102,6 +103,16 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 110px;
+}
+#nav-pfp {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    vertical-align: middle;
+    margin-left: 10px;
+    border:rgb(162, 115, 168) 1px solid;
 }
 ul{
     display: flex;
@@ -162,7 +173,7 @@ a{
     border-radius: 10px;
     background-color: rgb(248, 233, 247);
     align-items: center;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 .user-list div .user-list-pfp{
     grid-column: 1;
@@ -171,6 +182,9 @@ a{
     display: flex;
     border:none;
     flex-direction: column;
+}
+.user-link{
+    color:inherit;
 }
 .text-container h2{
     margin:0;
@@ -194,6 +208,15 @@ a{
     justify-content: center;
     margin-top: 30px;
     width: 420px;
+}
+#search-filter-box{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-radius: 7px;
+    background-color: rgb(248, 233, 247);
 }
 .msg{
     margin-top: 30px;
@@ -224,6 +247,20 @@ textarea{
     border-top: rgb(180, 134, 186) 1px solid;
     border-radius: 5px;
 }
+#profile-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+#profile-header .like{
+    margin: 0;
+    align-self: center;
+}
+#profile-header .like img{
+    width: 40px;
+    height: 40px;
+}
 
 /*bilder*/
 #user-pics{
@@ -245,15 +282,6 @@ textarea{
     object-fit: cover;
     border-radius: 15px;
     border:rgb(180, 134, 186) 2px solid;
-}
-#nav-pfp {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    vertical-align: middle;
-    margin-left: 10px;
-    border:rgb(162, 115, 168) 1px solid;
 }
 .user-list-pfp{
     width: 170px;

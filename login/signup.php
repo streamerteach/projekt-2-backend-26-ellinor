@@ -3,7 +3,7 @@
     Email:<input type="email" name="email" required><br>
     Username:<input type="text" name="username" required><br>
     Real name:<input type="text" name="realname" required><br>
-    Password:<input type="text" name="password" required><br>
+    Password:<input type="password" name="password" required><br>
     Zip code: <input type="int" name="zip" required><br>
     Bio: <input type="text" name="bio" required><br>
     Annual salary: <input type="int" name="salary" required><br>

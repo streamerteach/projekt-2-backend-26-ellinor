@@ -12,6 +12,9 @@ if (isset($_POST['saveEdits'])) {
     $stmt = $conn->prepare($sql);
     $stmt->execute([$username, $zip, $bio, $email, $salary, $preference, $_SESSION['uid']]);
 
+    $_SESSION["username"]=$username;
+    $_SESSION["preference"]=$preference;
+
     header("Location: ./index.php");
     exit;
 }

@@ -23,7 +23,8 @@ if (!empty($_POST["username"])) {
     if ($profile && password_verify($password, $profile['passhash'])) {
         
         $_SESSION['uid'] = $profile['id'];
-        $_SESSION["username"] = $profile['username'];
+        $_SESSION['username'] = $profile['username'];
+        $_SESSION['preference'] = $profile['preference'];
         setcookie("username", $username, time() + (86400 * 30), "/"); //86400s = 1 dag
 
         // kolla när användaren senast loggat in (touch(username.txt) exekverades)
