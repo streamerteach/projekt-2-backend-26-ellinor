@@ -16,8 +16,8 @@ if ($profile["id"] != $_SESSION["uid"]) {
                     exit;
                 }
                 print('<h1>'.$profile["realname"].'</h1>');
-                print("<div class='like'><img src=");
 
+                print("<div class='like'><img src=");
                 if($isLiked){
                     print("'../img/like_filled.png' ");
                 }
@@ -37,16 +37,14 @@ if ($profile["id"] != $_SESSION["uid"]) {
             <div><?php  
                 print('Username - '.$profile["username"].'<br>'); 
                 print('Email - '.$profile["email"].'<br>');
+                print('Gender - '.getGender($profile["gender"]).'<br>');
+                print('Looking for - '.getPreference($profile["preference"]).'<br>');
                 print('Salary - '.$profile["salary"].'€<br>');
                 print('Zip code - '.$profile["zipcode"].'<br>');
                 print('<div id="bio"><h2>About me:</h2>');
                 print("<p>".$profile["bio"].'</p></div>');
                 ?>
             </div> <br>
-
-            <?php // användares senaste besök
-                print("<p> Last login: ".$_SESSION['last_visit']."</p>");
-            ?>
 
             <div style='display:flex; gap: 8px; flex-direction: row;' 
             <?php if ($profile["id"] != $_SESSION['uid']) print("class='hidden'") // gömmer options div om inte egen profil?>> 
@@ -62,8 +60,10 @@ if ($profile["id"] != $_SESSION["uid"]) {
             <div <?php if ($profile["id"] == $_SESSION['uid']) print("class='hidden'") // gömmer like div om egen profil?>> 
                 <form method="POST" name='give-like' action="../like.php">
                     <input type="hidden" name="liked_id" value="<?= $profile['id'] // skickar med id på profilen i fråga?>"> 
+                    <input type="hidden" name="liked_likes" value="<?= $profile['likes']?>"> 
                     <input type="hidden" name="redirect" value="<?= $_SERVER['REQUEST_URI'] ?>">
-                    <button type="submit" name='like-button'> Send a like! </button> 
+                    <button type="submit" name='like-button' id='like-button'> <?php if ($isLiked) print("Unlike"); else print("Send a like!"); ?>
+                    </button> 
                 </form>
             </div>
 

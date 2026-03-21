@@ -1,19 +1,4 @@
 <?php 
-//funktioner för att översätta databasen till visuellt
-    function getGender($genderCode){
-        $genders = [1 => "woman", 2 => "man", 3 => "nonbinary", 4 => "other / prefer not to say"];
-
-        $gender = $genders[$genderCode];
-        return $gender;
-    }
-    function getPreference($preferenceCode) {
-        $preferences = [1 => "women", 2 => "men", 3 => "men or women", 4 => "other", 5 => "any"];
-
-        $preference = $preferences[$preferenceCode];
-        return $preference;
-    }   
-    
-
     // funktion för att hämta användare från databasen
     function list_users($conn) {
         $loggedIn = isset($_SESSION['uid']);
@@ -37,6 +22,7 @@
                 default: $orderBy = "likes DESC";
             }
 
+            $where = "";
             $params = [];
             if (isset($_GET['show-preferred'])) {
                 $preference = $_SESSION['preference'];
@@ -80,7 +66,7 @@
             $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        printUserCards($users); // från handy_methods för o gömma massa fula print statements här
+        printUserCards($users, $conn); // från handy_methods för o gömma massa fula print statements här
 
         print("<div class='pagination'>");
         if ($page > 1) {

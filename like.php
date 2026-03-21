@@ -12,17 +12,32 @@ if (empty($_SESSION['uid'])) {
 
 $liker = (int)$_SESSION['uid'];
 $liked = (int)$_POST['liked_id'];
+$likes = (int)$_POST['liked_likes'];
 
-try {
-    $stmt = $conn->prepare("INSERT INTO likes (liker_id, liked_id) VALUES (?, ?)");
+try {// checka like 
+    $stmt = $conn->prepare("SELECT 1 FROM likes WHERE liker_id = ? AND liked_id = ?");
     $stmt->execute([$liker, $liked]);
 
-    $stmt = $conn->prepare("UPDATE profiles SET likes = likes + 1 WHERE id = ?");
-    $stmt->execute([$liked]);
+    if ($stmt->fetch()) { //om resultat finns, d.v.s. true, -> unlike
+        $stmt = $conn->prepare("DELETE FROM likes WHERE liker_id = ? AND liked_id = ?");
+        $stmt->execute([$liker, $liked]);
 
-} catch (PDOException $e) {
-    
+        $likes -= 1;
+    } else { //like 
+        $stmt = $conn->prepare("INSERT INTO likes (liker_id, liked_id) VALUES (?, ?)");
+        $stmt->execute([$liker, $liked]);
+
+        $likes += 1;
+    }
+    $stmt = $conn->prepare("UPDATE profiles SET likes = $likes WHERE id = ?");
+    $stmt->execute([$liked]);
+} 
+catch (PDOException $e) {
+    error_log("Database error: " . $e->getMessage());
+    header("Location: ./home/");
+    exit;
 }
+
 $redirect = $_POST['redirect'] ?? '../home';
 header("Location: " .$redirect);
 exit;

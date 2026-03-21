@@ -66,6 +66,20 @@
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         return $user;
     } 
+    
+    //funktioner för att översätta registrerat kön o prefrens
+    function getGender($genderCode){
+        $genders = [1 => "woman", 2 => "man", 3 => "nonbinary", 4 => "other / prefer not to say"];
+
+        $gender = $genders[$genderCode];
+        return $gender;
+    }
+    function getPreference($preferenceCode) {
+        $preferences = [1 => "women", 2 => "men", 3 => "men or women", 4 => "other", 5 => "any"];
+
+        $preference = $preferences[$preferenceCode];
+        return $preference;
+    } 
 
     //funktion för o lista ut om en profil är gillad av user
     function isLikedByUser($conn, $uID, $profileID){
@@ -77,9 +91,9 @@
     }
     
     // funktion för att gömma massa fula print statements
-    function printUserCards($users){
+    function printUserCards($users, $conn){
         foreach ($users as $user) {
-            $loggedIn = isset($_SESSION['uid']);
+            $loggedIn = isset($_SESSION['uid']); //true eller false
             if ($loggedIn) // länkar till profil för annonsen (för inloggade användares bruk)
                 print("<a href='../profile/index.php?id=".$user["id"]."' class='user-link'>"); 
 
@@ -88,17 +102,27 @@
             print("<div class='text-container'><h2>".$user["realname"]."</h2>");
             print("<p>".getGender($user["gender"])."<br>");
             print("Looking for ".getPreference($user["preference"])."<br>");
-
+            
+            // mer info för inloggade
             if ($loggedIn) {
                 print("Annual salary: ".$user["salary"]."€<br>");
                 print("Email: ".$user["email"]."<br>");
             }
-            else{
+            else
                 print("Log in to see more info! <br>");
+            
+            print("</p></div>");
+
+            print("<div class='like'><img src=");
+            
+            if ($loggedIn && isLikedByUser($conn, $_SESSION['uid'], $user["id"])) { 
+                // triggas endast om inloggad OCH profil är gillad
+                print("'../img/like_filled.png' alt='likes:'>".$user["likes"]."</div></div>");
+            } 
+            else { // om inte inloggad eller inte gillad 
+                print("'../img/like.png' alt='likes:'>".$user["likes"]."</div></div>");
             }
 
-            print("</p></div>");
-            print("<div class='like'><img src='../img/like.png' alt='likes:'>".$user["likes"]."</div></div>");
             if ($loggedIn)
                 print("</a>");
         }  
