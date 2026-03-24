@@ -15,7 +15,7 @@ if (!empty($_POST["username"])) {
     $username = test_input($_POST["username"]);
     $password = $_POST["password"];
 
-    $sql = "SELECT id, username, passhash FROM profiles WHERE username = ?"; 
+    $sql = "SELECT * FROM profiles WHERE username = ?"; 
     $stmt = $conn->prepare($sql);
     $stmt->execute([$username]);
     $profile = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -25,6 +25,7 @@ if (!empty($_POST["username"])) {
         $_SESSION['uid'] = $profile['id'];
         $_SESSION['username'] = $profile['username'];
         $_SESSION['preference'] = $profile['preference'];
+        $_SESSION['role'] = $profile['role'];
         setcookie("username", $username, time() + (86400 * 30), "/"); //86400s = 1 dag
 
         // kolla när användaren senast loggat in (touch(username.txt) exekverades)

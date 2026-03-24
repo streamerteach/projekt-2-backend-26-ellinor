@@ -33,7 +33,6 @@ try {// checka like
     $stmt->execute([$liked]);
 } 
 catch (PDOException $e) {
-    error_log("Database error: " . $e->getMessage());
     header("Location: ./home/");
     exit;
 }

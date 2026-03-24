@@ -12,7 +12,7 @@
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     error_reporting(E_ALL);
-    ini_set('display_errors', '1'); //om live server, DONT DISPLAY ERRORS! 
+    ini_set('display_errors', '0'); //om live server, DONT DISPLAY ERRORS! 
     date_default_timezone_set('Europe/Helsinki');
 
 
@@ -81,6 +81,10 @@
         return $preference;
     } 
 
+    function isAdmin() {
+        return isset($_SESSION['role']) && $_SESSION['role'] == 4;
+    }
+
     //funktion för o lista ut om en profil är gillad av user
     function isLikedByUser($conn, $uID, $profileID){
         $sql = "SELECT * FROM likes WHERE liker_id = ? AND liked_id = ?";
@@ -88,47 +92,6 @@
         $stmt->execute([$uID, $profileID]);
         // returnerar true om uID finns i profilens likes, annars false
         return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
-    }
-    
-    // funktion för att gömma massa fula print statements
-    function printUserCards($users, $conn){
-        foreach ($users as $user) {
-            $loggedIn = isset($_SESSION['uid']); //true eller false
-            if ($loggedIn) // länkar till profil för annonsen (för inloggade användares bruk)
-                print("<a href='../profile/index.php?id=".$user["id"]."' class='user-link'>"); 
-
-            print("<div class= 'user-list-entry'>");
-            print("<img src= '".$user['profile_picture']."' class='user-list-pfp'>");
-            print("<div class='text-container'><h2>".$user["realname"]."</h2>");
-            print("<p>".getGender($user["gender"])."<br>");
-            print("Looking for ".getPreference($user["preference"])."<br>");
-            
-            // mer info för inloggade
-            if ($loggedIn) {
-                print("Annual salary: ".$user["salary"]."€<br>");
-                print("Email: ".$user["email"]."<br>");
-            }
-            else
-                print("Log in to see more info! <br>");
-            
-            print("</p></div>");
-
-            print("<div class='like'><img src=");
-            
-            if ($loggedIn && isLikedByUser($conn, $_SESSION['uid'], $user["id"])) { 
-                // triggas endast om inloggad OCH profil är gillad
-                print("'../img/like_filled.png' alt='likes:'>".$user["likes"]."</div></div>");
-            } 
-            else { // om inte inloggad eller inte gillad 
-                print("'../img/like.png' alt='likes:'>".$user["likes"]."</div></div>");
-            }
-
-            if ($loggedIn)
-                print("</a>");
-        }  
-
-        if(!$loggedIn)
-            print("<p> Log in to make searches and connect! </p>");
     }
 ?>
 

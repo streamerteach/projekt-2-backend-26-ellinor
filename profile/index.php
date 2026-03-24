@@ -15,8 +15,19 @@ if ($profile["id"] != $_SESSION["uid"]) {
                     header("Location: ../login");
                     exit;
                 }
-                print('<h1>'.$profile["realname"].'</h1>');
+                print('<h1>'.$profile["realname"].'</h1>');?>
+                
+                <div <?php if ($profile["id"] == $_SESSION['uid']) print("class='hidden'") // gömmer like div om egen profil?>> 
+                    <form method="POST" name='give-like' action="../like.php">
+                        <input type="hidden" name="liked_id" value="<?= $profile['id'] // skickar med id på profilen i fråga?>"> 
+                        <input type="hidden" name="liked_likes" value="<?= $profile['likes']?>"> 
+                        <input type="hidden" name="redirect" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                        <button type="submit" name='like-button' id='like-button'> <?php if ($isLiked) print("Unlike"); else print("Send a like!"); ?>
+                        </button> 
+                    </form>
+                
 
+                <?php
                 print("<div class='like'><img src=");
                 if($isLiked){
                     print("'../img/like_filled.png' ");
@@ -25,8 +36,8 @@ if ($profile["id"] != $_SESSION["uid"]) {
                     print("'../img/like.png' ");
                 }
                 print("alt='likes:'>".$profile["likes"]);
-                print("</div>");
-        ?> 
+                print("</div>");?> 
+                </div>
         </div>
         <article>
             <img class= "pfp" src= "<?php print($profile['profile_picture']);?>"><br>
@@ -47,44 +58,37 @@ if ($profile["id"] != $_SESSION["uid"]) {
             </div> <br>
 
             <div style='display:flex; gap: 8px; flex-direction: row;' 
-            <?php if ($profile["id"] != $_SESSION['uid']) print("class='hidden'") // gömmer options div om inte egen profil?>> 
-                <form action="logout.php" method="POST">
+            <?php if ($profile["id"] != $_SESSION['uid'] && $_SESSION['role'] != 4) print("class='hidden'") // gömmer options div om inte egen profil?>> 
+                <form action="logout.php" method="POST" <?php if ($profile["id"] != $_SESSION['uid']) print("class='hidden'")?>>
                     <button type="submit" name="logout">Log out</button>
                 </form>
                 
-                <a href="./editprofile.php">
+                <a href='./editprofile.php?id=<?php print($profile["id"])?>'>
                     <button>Edit profile</button>
                 </a> 
             </div>
 
-            <div <?php if ($profile["id"] == $_SESSION['uid']) print("class='hidden'") // gömmer like div om egen profil?>> 
-                <form method="POST" name='give-like' action="../like.php">
-                    <input type="hidden" name="liked_id" value="<?= $profile['id'] // skickar med id på profilen i fråga?>"> 
-                    <input type="hidden" name="liked_likes" value="<?= $profile['likes']?>"> 
-                    <input type="hidden" name="redirect" value="<?= $_SERVER['REQUEST_URI'] ?>">
-                    <button type="submit" name='like-button' id='like-button'> <?php if ($isLiked) print("Unlike"); else print("Send a like!"); ?>
-                    </button> 
-                </form>
-            </div>
-
+            
         </article>
     
         <article id="commentsection">
-            <form method="POST">
-                <textarea name="comment" required></textarea><br>
-                <button type="submit" name="submit_comment">Post comment</button>
-            </form>
-            <h2> Comments: </h2>
+            <h2> Conversations: </h2>
             <?php include "./commentsection.php"?>
+
+            <form method="POST" action="leave_comment.php" <?php if ($profile["id"] == $_SESSION['uid']) print("class='hidden'") // kan inte posta svar frång egen profil tyvärr?>> 
+                <input type="hidden" name="recipient_id" value="<?= $profile['id'] ?>">
+                <textarea name="comment" required></textarea><br>
+                <button type="submit" name="submit_comment">Send message</button>
+            </form>
         </article>
+
+
         <footer>
-        <?php 
-            print("Server running on ".$_SERVER['SERVER_SOFTWARE'].", PHP version ".phpversion().".<br>");
-        
-            //varje besökare (username eller IP) får en egen line i txt filen, så lines = besökare
-            $lineCount = substr_count(file_get_contents('../home/besok.txt'), PHP_EOL);
-            print("Number of visitors so far: ".$lineCount);
-        ?>
+            <?php 
+                print("Server running on ".$_SERVER['SERVER_SOFTWARE'].", PHP version ".phpversion().".<br>");
+            
+                $lineCount = substr_count(file_get_contents('./besok.txt'), PHP_EOL);?>
+            <p><a href="../rapport.php">Rapport</a></p>
         </footer>
     </section>
 </div>
